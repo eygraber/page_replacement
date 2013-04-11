@@ -4,7 +4,7 @@
 
 queue<PageTableEntry*>* InputHandler::parseInput(char* path) {
     ifstream inputFile(path);
-    if(!inputFile) {
+    if(!inputFile || inputFile.fail()) {
         return NULL;
     }
 
