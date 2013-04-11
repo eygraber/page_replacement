@@ -4,6 +4,9 @@
 
 queue<PageTableEntry*>* InputHandler::parseInput(char* path) {
     ifstream inputFile(path);
+    if(!inputFile) {
+        return NULL;
+    }
 
     queue<PageTableEntry*>* pageTableEntries = new queue<PageTableEntry*>();
 
