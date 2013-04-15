@@ -18,31 +18,34 @@ string getReplacementPolicyString(int policy);
 
 int main(int argc, char** argv) {
     //saves stdout's buffer so we can restore it later
-    //streambuf* coutbuf = cout.rdbuf();
+    streambuf* coutbuf = cout.rdbuf();
 
     InputHandler ih;
 
     for(int i = 1; i < argc; i += 3) {
         //gets the type of replacement policy to use from the parameters
         int policy = atoi(argv[i]);
+        //the maximum amount of pages that can be held in memory
         unsigned int maxPagesInMemory = atoi(argv[i + 1]);
+        //path to the input file
         char* path = argv[i + 2];
 
         //processes the input file and builds a queue of page accesses
         queue<PageTableEntry*>* pageTableEntries = ih.parseInput(path);
+        //either the input file doesn't exist or the input wasn't formatted correctly
         if(pageTableEntries == NULL) {
             cout << "There was an error parsing the input for " << path << "!" << endl;
             continue;
         }
 
-        //ostringstream oss;
+        ostringstream oss;
         //strips the extension off the filename and builds the output file name
-        //oss << getFileNameWithoutExtension(path) << "." << getReplacementPolicyString(policy) << ".txt";
-        //ofstream out(oss.str().c_str());
+        oss << getFileNameWithoutExtension(path) << "." << getReplacementPolicyString(policy) << ".txt";
+        ofstream out(oss.str().c_str());
         //sets cout's buffer to the output file
-        //cout.rdbuf(out.rdbuf());
+        cout.rdbuf(out.rdbuf());
 
-        //creates and runs the memeory manager on the queue of page accesses
+        //creates and runs the memory manager on the queue of page accesses
         //based on the replacement policy
         MemoryManager* mm = new MemoryManager((ReplacementPolicy)policy, maxPagesInMemory, pageTableEntries);
         mm->doManage();
@@ -51,11 +54,11 @@ int main(int argc, char** argv) {
         delete pageTableEntries;
 
         //gives cout its buffer back so we can print any errors
-        //cout.rdbuf(coutbuf);
+        cout.rdbuf(coutbuf);
     }
 
     //gives cout its buffer back
-    //cout.rdbuf(coutbuf);
+    cout.rdbuf(coutbuf);
 
     return 0;
 }

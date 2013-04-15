@@ -4,12 +4,15 @@
 
 queue<PageTableEntry*>* InputHandler::parseInput(char* path) {
     ifstream inputFile(path);
+
+    //if the input file does not exist
     if(!inputFile || inputFile.fail()) {
         return NULL;
     }
 
     queue<PageTableEntry*>* pageTableEntries = new queue<PageTableEntry*>();
 
+    //create a queue of PageTableEntrys
     while(!inputFile.eof() && inputFile.good()) {
         int page = parseData(&inputFile);
         if(page < 0) {

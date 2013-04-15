@@ -9,6 +9,7 @@
 
 using namespace std;
 
+//represents the different policies that can be used
 enum ReplacementPolicy { FCFS = 0, SC = 1, LRU = 2 };
 
 class MemoryManager {
@@ -41,7 +42,9 @@ class MemoryManager {
 
         unsigned int maxPagesInMemory;
 
+        //this queue holds the PageTableEntrys parsed from the input
         queue<PageTableEntry*>* pageTableEntries;
+        //the page table that will be used to manage the pages in memory
         PageTable* pageTable;
 
         double pageAccessCount;
@@ -54,10 +57,16 @@ class MemoryManager {
             pageTable(new PageTable()), pageAccessCount(pageTableEntries->size()), pageFaultCount(0) {}
 
         void doManage() {
+            //loop through all of the PageTableEntrys parsed from input
             while(!pageTableEntries->empty()) {
+                //runs the policy for accessing a page
+                //if a page needs to be replaced it will happen here
                 alg->accessPage(pageTableEntries->front(), pageTable);
+                //prints the PageTable in memory-order
                 pageTable->print();
+                //updates the age of the pages
                 pageTable->updateCounter();
+                //remove this page from the queue of PageTableEntrys parsed from input
                 pageTableEntries->pop();
             }
 

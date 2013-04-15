@@ -9,6 +9,7 @@ class MemoryManager::SCAlgorithm : public MemoryManager::ReplacementAlgorithm {
         void accessPage(PageTableEntry* page, PageTable* pageTable);
     private:
         MemoryManager* mm;
+        //structure used to manage this replacement policy
         list<PageTableEntry*>* q;
         PageTableEntry* getPageToReplace();
 };

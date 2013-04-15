@@ -12,6 +12,7 @@ class MemoryManager::FCFSAlgorithm : public MemoryManager::ReplacementAlgorithm 
         ~FCFSAlgorithm() {}
     private:
         MemoryManager* mm;
+        //structure used to manage this replacement policy
         list<PageTableEntry*>* q;
 };
 
